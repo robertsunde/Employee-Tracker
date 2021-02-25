@@ -19,3 +19,18 @@ connection.connect((err) => {
     if (err) throw err;
     runSearch();
   });
+
+const whatWouldYouLike = () => {
+    inquirer
+        .prompt({
+            name: `action`,
+            type: `list`,
+            message: `What would you like to do?`,
+            choices: [
+                ``
+
+
+
+            ]
+        })
+}
