@@ -21,6 +21,7 @@ connection.connect((err) => {
   });
 
 
+// Main prompt questions for database build.
 const whatWouldYouLike = () => {
     inquirer
         .prompt([{
@@ -37,6 +38,7 @@ const whatWouldYouLike = () => {
                 `Update Employee Role`
             ]
         }
+// switch cases that allow each selected answer to link to a like function.
     ]).then((answer) => {
             switch (answer.action) {
                 case `Add Department`:
@@ -65,7 +67,7 @@ const whatWouldYouLike = () => {
             }
         });
 
-
+// function for adding a department.
         const departmentAdd = () => {
         inquirer
         .prompt([{
@@ -95,7 +97,7 @@ const whatWouldYouLike = () => {
 
         }
 
-
+// function for adding a role.
         const roleAdd = () => {
             connection.query("SELECT * FROM role", function (err, results){
             if (err) throw err;
@@ -119,26 +121,26 @@ const whatWouldYouLike = () => {
             message: `Enter the salary of this role.`
             },
 
-            // {
-            // name: `department_id`,
-            // type: `list`,
-            // message: `Enter the department id of this role.`,
-            // choices: results.map(item => item.name)
-            // },
+            {
+            name: `department_id`,
+            type: `list`,
+            message: `Enter the department id of this role.`,
+            choices: results.map(item => item.name)
+            },
 
         ])
             .then((answer) => {
-                // const departmentChosen = results.find(item => item.name===answer.department_id)
+                const departmentChosen = results.find(item => item.name===answers.department_id)
 
                 connection.query(
                   "INSERT INTO role SET ?", {
                     title: answer.roleAdd,
                     salary: answer.salary,
-                    department_id: 1
+                    department_id: departmentChosen.id
                   },
                   function (err) {
                       if (err) throw err;
-                      console.log("Added" + answer.roleAdd + "Role");
+                      console.log("Added" + answers.roleAdd + "Role");
                     whatWouldYouLike();
                   }  
                 )
@@ -147,7 +149,7 @@ const whatWouldYouLike = () => {
             }
 
 
-
+// function for viewing departments in the terminal.
             const departmentView = () => {
                 connection.query("SELECT * FROM department", (err, res) => {
                     if(err) throw err;
@@ -157,7 +159,7 @@ const whatWouldYouLike = () => {
             }
 
 
-
+// function for viewing roles in the terminal.
             const roleView = () => {
                 connection.query("SELECT * FROM role", (err, res) => {
                     if(err) throw err;
@@ -167,7 +169,7 @@ const whatWouldYouLike = () => {
             }
 
 
-
+// function for viewing employees in the terminal.
             const employeeView = () => {
                 connection.query("SELECT * FROM employee", (err, res) => {
                     if(err) throw err;
