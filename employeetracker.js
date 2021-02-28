@@ -119,26 +119,26 @@ const whatWouldYouLike = () => {
             message: `Enter the salary of this role.`
             },
 
-            {
-            name: `department_id`,
-            type: `list`,
-            message: `Enter the department id of this role.`,
-            choices: results.map(item => item.name)
-            },
+            // {
+            // name: `department_id`,
+            // type: `list`,
+            // message: `Enter the department id of this role.`,
+            // choices: results.map(item => item.name)
+            // },
 
         ])
             .then((answer) => {
-                const departmentChosen = results.find(item => item.name===answers.department_id)
+                // const departmentChosen = results.find(item => item.name===answer.department_id)
 
                 connection.query(
                   "INSERT INTO role SET ?", {
                     title: answer.roleAdd,
                     salary: answer.salary,
-                    department_id: departmentChosen.id
+                    department_id: 1
                   },
                   function (err) {
                       if (err) throw err;
-                      console.log("Added" + answers.roleAdd + "Role");
+                      console.log("Added" + answer.roleAdd + "Role");
                     whatWouldYouLike();
                   }  
                 )
