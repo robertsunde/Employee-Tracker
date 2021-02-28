@@ -11,7 +11,7 @@ user: `root`,
 
 // database password.
 password: `yourRootPassword`,
-database: `empoloyee_tracker_db`,
+database: `employee_tracker_db`,
 });
 
 
@@ -36,10 +36,9 @@ const whatWouldYouLike = () => {
                 `View Employee`,
                 `Update Employee Role`
             ]
-        }])
-
-        .then((answer) => {
-            switch (amswer.action) {
+        }
+    ]).then((answer) => {
+            switch (answer.action) {
                 case `Add Department`:
                 departmentAdd();
                 break;
@@ -50,6 +49,14 @@ const whatWouldYouLike = () => {
 
                 case `View Department`:
                 departmentView();
+                break;
+
+                case `View Role`:
+                roleView();
+                break;
+
+                case `View Employee`:
+                employeeView();
                 break;
 
                 case `Exit`:
@@ -80,7 +87,7 @@ const whatWouldYouLike = () => {
               },
               function (err) {
                   if (err) throw err;
-                  console.log("Added" + answers.departmentAdd + "Department");
+                  console.log("Added" + answer.departmentAdd + "Department");
                 whatWouldYouLike();
               }  
             )
@@ -90,10 +97,12 @@ const whatWouldYouLike = () => {
 
 
         const roleAdd = () => {
+            connection.query("SELECT * FROM role", function (err, results){
+            if (err) throw err;
             inquirer
             .prompt([{
                 name: `roleAdd`,
-                type: `input`,
+                type: `list`,
                 message: `Choose the role you would like to add.`,
                 choices: [
                     `Manager`,
@@ -114,14 +123,12 @@ const whatWouldYouLike = () => {
             name: `department_id`,
             type: `list`,
             message: `Enter the department id of this role.`,
-            choices: res.map(item => item.name)
+            choices: results.map(item => item.name)
             },
 
         ])
             .then((answer) => {
-                const departmentChosen = res.find(item => item.name===answers.department_id)
-
-
+                const departmentChosen = results.find(item => item.name===answers.department_id)
 
                 connection.query(
                   "INSERT INTO role SET ?", {
@@ -136,7 +143,7 @@ const whatWouldYouLike = () => {
                   }  
                 )
             })
-    
+            })
             }
 
 
@@ -147,9 +154,26 @@ const whatWouldYouLike = () => {
                     console.table(res)
                     whatWouldYouLike();
                 })
+            }
 
 
 
+            const roleView = () => {
+                connection.query("SELECT * FROM role", (err, res) => {
+                    if(err) throw err;
+                    console.table(res)
+                    whatWouldYouLike();
+                })
+            }
+
+
+
+            const employeeView = () => {
+                connection.query("SELECT * FROM employee", (err, res) => {
+                    if(err) throw err;
+                    console.table(res)
+                    whatWouldYouLike();
+                })
             }
 
 
