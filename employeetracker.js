@@ -33,6 +33,7 @@ const whatWouldYouLike = () => {
                 `Add Department`,
                 `Add Role`,
                 `Add Employee`,
+                `Remove Employee`,
                 `View Department`,
                 `View Role`,
                 `View Employee`,
@@ -56,6 +57,18 @@ const whatWouldYouLike = () => {
                 case `Add Employee`:
                 employeeAdd();
                 break;
+
+                case `Remove Employee`:
+                employeeDelete();
+                break;
+
+                // case `Add Role`:
+                // roleAdd();
+                // break;
+
+                // case `Add Employee`:
+                // employeeAdd();
+                // break;
 
                 case `View Department`:
                 departmentView();
@@ -361,9 +374,36 @@ const employeeModifyManager = () => {
               })   
             }
 
-
- 
-
-
-
+// function for deleting a selected employee.
+            const employeeDelete = () => {
+                connection.query("SELECT * FROM employee", function (err, results){
+                    if(err) throw err;
+                    inquirer
+                    .prompt([{
+                    name: `employeeDeleteName`,
+                    type: `list`,
+                    message: `Please select the employee that you would like to remove.`,
+                    choices: results.map(item => item.first_name)
+                    },
+                ])
+              .then((answer) => {
+                const employeeRemove1 = results.find(item => item.first_name===answer.employeeDeleteName)
+                const employeeRemove2 = employeeRemove1.id
+                connection.query(
+                "DELETE FROM employee WHERE id = " + "'" + employeeRemove2 + "'",
+                function (err) {
+                if (err) throw err;
+                console.log("Successfully removed " + answer.employeeDeleteName + " from the database!");
+                whatWouldYouLike();
+                    }  
+                )
+                })
+              })   
+            }
 }
+
+
+
+
+// //////////////////////////////////////////////////////////
+
