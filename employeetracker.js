@@ -33,14 +33,16 @@ const whatWouldYouLike = () => {
                 `Add Department`,
                 `Add Role`,
                 `Add Employee`,
-                `Remove Employee`,
-                `Remove Role`,
                 `View Department`,
                 `View Role`,
                 `View Employee`,
                 `View Employees of Selected Manager`,
+                `View Budget of Selected Department`,
                 `Update Employee's Role`,
                 `Update Employee's Manager`,
+                `Remove Department`,
+                `Remove Role`,
+                `Remove Employee`,
                 `Exit`
             ]
         }
@@ -67,9 +69,9 @@ const whatWouldYouLike = () => {
                 roleDelete();
                 break;
 
-                // case `Add Employee`:
-                // employeeAdd();
-                // break;
+                case `Remove Department`:
+                departmentDelete();
+                break;
 
                 case `View Department`:
                 departmentView();
@@ -85,6 +87,10 @@ const whatWouldYouLike = () => {
 
                 case `View Employees of Selected Manager`:
                 employeeManagerView();
+                break;
+
+                case `View Budget of Selected Department`:
+                departmentBudgetView();
                 break;
 
                 case `Update Employee's Role`:
@@ -429,7 +435,60 @@ const employeeModifyManager = () => {
               })   
             }
 
+// function for removing a selected department.
+            const departmentDelete = () => {
+                connection.query("SELECT * FROM department", function (err, results){
+                    if(err) throw err;
+                    inquirer
+                    .prompt([{
+                    name: `departmentDeleteName`,
+                    type: `list`,
+                    message: `Please select the department that you would like to remove.`,
+                    choices: results.map(item => item.name)
+                    },
+                ])
+              .then((answer) => {
+                const departmentRemove1 = results.find(item => item.name===answer.departmentDeleteName)
+                const departmentRemove2 = departmentRemove1.id
+                connection.query(
+                "DELETE FROM department WHERE id = " + "'" + departmentRemove2 + "'",
+                function (err) {
+                if (err) throw err;
+                console.log("Successfully removed " + answer.departmentDeleteName + " from the available departments!");
+                whatWouldYouLike();
+                    }  
+                )
+                })
+              })   
+            }
 
+
+
+// function for viewing the total utilized budget of a selected department.
+const departmentBudgetView = () => {
+    connection.query("SELECT * FROM department", function (err, results){
+        if(err) throw err;
+        inquirer
+        .prompt([{
+        name: `departmentForBudget`,
+        type: `list`,
+        message: `Please select a department to view its budget.`,
+        choices: results.map(item => item.name)
+        },
+    ])
+  .then((answer) => {
+    const departmentForBudget1 = results.find(item => item.name===answer.departmentForBudget)
+    const departmentForBudget2 = departmentForBudget1.id
+    connection.query("SELECT SUM(salary) as Total_Department_Budget FROM role WHERE department_id = " + "'" + departmentForBudget2 + "'", (err, res) => {
+    if (err) throw err;
+    console.table(res)
+    whatWouldYouLike()
+    })
+  })
+
+
+
+  
 
 
 
@@ -443,4 +502,4 @@ const employeeModifyManager = () => {
 
 
 // //////////////////////////////////////////////////////////
-
+    )}} 
