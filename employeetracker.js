@@ -36,7 +36,9 @@ const whatWouldYouLike = () => {
                 `View Department`,
                 `View Role`,
                 `View Employee`,
-                `Update Employee Role`,
+                `View Employees of Selected Manager`,
+                `Update Employee's Role`,
+                `Update Employee's Manager`,
                 `Exit`
             ]
         }
@@ -67,8 +69,16 @@ const whatWouldYouLike = () => {
                 employeeView();
                 break;
 
-                case `Update Employee Role`:
+                case `View Employees of Selected Manager`:
+                employeeManagerView();
+                break;
+
+                case `Update Employee's Role`:
                 employeeModifyRole();
+                break;
+
+                case `Update Employee's Manager`:
+                employeeModifyManager();
                 break;
 
                 case `Exit`:
@@ -206,7 +216,7 @@ const employeeAdd = () => {
     })
     }
 
-// function for modifying an employee.
+// function for modifying an employee's role.
 const employeeModifyRole = () => {
     connection.query("SELECT * FROM employee", function (err, results){
     if (err) throw err;
@@ -214,7 +224,7 @@ const employeeModifyRole = () => {
     .prompt([{
         name: `employeeUpdate`,
         type: `list`,
-        message: `Choose the employee you would like to modify.`,
+        message: `Choose the employee whose role you would like to update.`,
         choices: results.map(item => item.first_name)
         },
     ])
@@ -231,27 +241,17 @@ const employeeModifyRole = () => {
     message: `Select the new role of the employee.`,
     choices: results.map(item => item.title)
     },
-
-    // {
-    // name: `manager_id`,
-    // type: `list`,
-    // message: `Enter the manager id.`,
-    // choices: results.map(item => item.first_name)
-    // }
-
 ])
     .then((answer) => {
         const roleChosen = results.find(item => item.title===answer.role_id)
-        // const managerChosen = results.find(item => item.first_name===answer.employee_id)
 
         connection.query(
           "UPDATE employee SET ? WHERE first_name = " + "'" + updateEmployee + "'", {
             role_id: "" + roleChosen.id + "",
-            // manager_id: managerChosen.id
           },
           function (err) {
               if (err) throw err;
-              console.log("Updated " + updateEmployee + "'s role!");
+              console.log("Successfully updated " + updateEmployee + "'s role to " + answer.role_id + "!");
             whatWouldYouLike();
           }  
         )
@@ -261,6 +261,52 @@ const employeeModifyRole = () => {
     })
 }
 
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// function for modifying an employee's role.
+const employeeModifyManager = () => {
+    connection.query("SELECT * FROM employee", function (err, results){
+    if (err) throw err;
+    inquirer
+    .prompt([{
+        name: `employeeUpdateManager`,
+        type: `list`,
+        message: `Please select the employee whom will be reporting to a different manager.`,
+        choices: results.map(item => item.first_name)
+        },
+    ])
+
+.then((answer) => {
+    const updateEmployeeManager = (answer.employeeUpdateManager)
+    connection.query("SELECT * FROM employee", function (err, results){
+        if (err) throw err;
+        inquirer
+        .prompt([
+    {
+    name: `manager_id`,
+    type: `list`,
+    message: `Please select the new manager of this employee.`,
+    choices: results.map(item => item.first_name)
+    },
+])
+    .then((answer) => {
+        const managerChosenUpdated = results.find(item => item.first_name===answer.manager_id)
+
+        connection.query(
+          "UPDATE employee SET ? WHERE first_name = " + "'" + updateEmployeeManager + "'", {
+            manager_id: "" + managerChosenUpdated.id + "",
+          },
+          function (err) {
+              if (err) throw err;
+              console.log("Successfully updated " + updateEmployeeManager + "'s manager to" + " " + answer.manager_id + "!");
+            whatWouldYouLike();
+          }  
+        )
+    })
+    })
+    })
+    })
+}
+// /////////////////////////////////////////////////////////////////////////////////////////////////
 
 // function for viewing departments in the terminal.
             const departmentView = () => {
@@ -291,8 +337,32 @@ const employeeModifyRole = () => {
                 })
             }
 
+// function for viewing employees by their manager in the terminal.
+            const employeeManagerView = () => {
+                connection.query("SELECT * FROM employee", function (err, results){
+                    if(err) throw err;
+                    inquirer
+                    .prompt([{
+                    name: `managersTeam`,
+                    type: `list`,
+                    message: `Please choose the manager whose team you would like to view.`,
+                    choices: results.map(item => item.first_name)
+                    },
+                ])
+              .then((answer) => {
+                const managersName = results.find(item => item.first_name===answer.managersTeam)
+                const managersID = managersName.id
+                connection.query("SELECT * FROM employee WHERE manager_id = " + "'" + managersID + "'", (err, res) => {
+                if (err) throw err;
+                console.table(res)
+                whatWouldYouLike()
+                })
+              })
+              })   
+            }
 
 
+ 
 
 
 
