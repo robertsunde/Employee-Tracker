@@ -154,6 +154,62 @@ const whatWouldYouLike = () => {
             }
 
 
+// function for adding an employee.
+const employeeAdd = () => {
+    connection.query("SELECT * FROM role", function (err, results){
+    if (err) throw err;
+    inquirer
+    .prompt([{
+        name: `employeeAdd`,
+        type: `input`,
+        message: `Enter the first name of the employee you would like to add.`,
+    },
+
+    {
+    name: `last_name`,
+    type: `input`,
+    message: `Enter the last name of the employee you would like to add.`
+    },
+
+    {
+    name: `role_id`,
+    type: `list`,
+    message: `Enter the role id.`,
+    choices: results.map(item => item.title)
+    },
+
+    // {
+    // name: `manager_id`,
+    // type: `list`,
+    // message: `Enter the manager id.`,
+    // choices: results.map(item => item.first_name)
+    // }
+
+])
+    .then((answer) => {
+        const roleChosen = results.find(item => item.title===answer.role_id)
+        // const managerChosen = results.find(item => item.first_name===answer.employee_id)
+
+        connection.query(
+          "INSERT INTO employee SET ?", {
+            first_name: answer.employeeAdd,
+            last_name: answer.last_name,
+            role_id: roleChosen.id,
+            // manager_id: managerChosen.id
+          },
+          function (err) {
+              if (err) throw err;
+              console.log("Added " + answer.employeeAdd + " " + answer.last_name + " to the team!");
+            whatWouldYouLike();
+          }  
+        )
+    })
+    })
+    }
+
+
+
+
 // function for viewing departments in the terminal.
             const departmentView = () => {
                 connection.query("SELECT * FROM department", (err, res) => {
