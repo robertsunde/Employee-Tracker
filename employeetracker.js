@@ -22,6 +22,7 @@ connection.connect((err) => {
 
 
 // Main prompt questions for database build.
+// ///////////////////////////////////////////////////////////////////////////////////////////
 const whatWouldYouLike = () => {
     inquirer
         .prompt([{
@@ -47,6 +48,7 @@ const whatWouldYouLike = () => {
             ]
         }
 // switch cases that allow each selected answer to link to a like function.
+// //////////////////////////////////////////////////////////////////////////
     ]).then((answer) => {
             switch (answer.action) {
                 case `Add Department`:
@@ -107,6 +109,10 @@ const whatWouldYouLike = () => {
             }
         });
 
+
+//  CONTAINS FUNCTIONS FOR ADDING A SELECTED VARIABLE
+// /////////////////////////////////////////////////////////////////////////////////////
+
 // function for adding a department.
         const departmentAdd = () => {
         inquirer
@@ -122,7 +128,7 @@ const whatWouldYouLike = () => {
               },
               function (err) {
                   if (err) throw err;
-                  console.log("Added" + answer.departmentAdd + "Department");
+                  console.log("Added " + answer.departmentAdd + " Department");
                 whatWouldYouLike();
               }  
             )
@@ -236,7 +242,10 @@ const employeeAdd = () => {
     })
     }
 
-// function for modifying an employee's role.
+// CONTAINS ALL FUNCTIONS FOR MODIFYING THE SELECTED VARIABLE OF AN EMPLOYEE
+////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+// function for modifying an employee's ROLE.
 const employeeModifyRole = () => {
     connection.query("SELECT * FROM employee", function (err, results){
     if (err) throw err;
@@ -281,8 +290,7 @@ const employeeModifyRole = () => {
     })
 }
 
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// function for modifying an employee's role.
+// function for modifying an employee's MANAGER.
 const employeeModifyManager = () => {
     connection.query("SELECT * FROM employee", function (err, results){
     if (err) throw err;
@@ -326,6 +334,8 @@ const employeeModifyManager = () => {
     })
     })
 }
+
+//  CONTAINS ALL FUNCTIONS FOR VIEWING A SELECTED VARIABLE
 // /////////////////////////////////////////////////////////////////////////////////////////////////
 
 // function for viewing departments in the terminal.
@@ -380,6 +390,11 @@ const employeeModifyManager = () => {
               })
               })   
             }
+
+
+
+//  CONTAINS ALL FUNCTIONS FOR REMOVING SELECTED VARIABLE
+// ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // function for removing a selected employee.
             const employeeDelete = () => {
@@ -464,6 +479,9 @@ const employeeModifyManager = () => {
 
 
 
+// CONTAINS FUNCTION FOR VIEWING SUM OF SELECTED DEPARTMENT
+// /////////////////////////////////////////////////////////////////////////////////////////////////
+
 // function for viewing the total utilized budget of a selected department.
 const departmentBudgetView = () => {
     connection.query("SELECT * FROM department", function (err, results){
@@ -488,18 +506,7 @@ const departmentBudgetView = () => {
 
 
 
-  
-
-
-
-
-
-
-// ////////////////////////////////////////////////////
 }
 
 
-
-
-// //////////////////////////////////////////////////////////
     )}} 
