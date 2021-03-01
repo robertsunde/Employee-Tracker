@@ -35,7 +35,8 @@ const whatWouldYouLike = () => {
                 `View Department`,
                 `View Role`,
                 `View Employee`,
-                `Update Employee Role`
+                `Update Employee Role`,
+                `Exit`
             ]
         }
 // switch cases that allow each selected answer to link to a like function.
@@ -47,6 +48,10 @@ const whatWouldYouLike = () => {
 
                 case `Add Role`:
                 roleAdd();
+                break;
+
+                case `Add Employee`:
+                employeeAdd();
                 break;
 
                 case `View Department`:
@@ -99,7 +104,7 @@ const whatWouldYouLike = () => {
 
 // function for adding a role.
         const roleAdd = () => {
-            connection.query("SELECT * FROM role", function (err, results){
+            connection.query("SELECT * FROM department", function (err, results){
             if (err) throw err;
             inquirer
             .prompt([{
@@ -130,7 +135,7 @@ const whatWouldYouLike = () => {
 
         ])
             .then((answer) => {
-                const departmentChosen = results.find(item => item.name===answers.department_id)
+                const departmentChosen = results.find(item => item.name===answer.department_id)
 
                 connection.query(
                   "INSERT INTO role SET ?", {
@@ -140,7 +145,7 @@ const whatWouldYouLike = () => {
                   },
                   function (err) {
                       if (err) throw err;
-                      console.log("Added" + answers.roleAdd + "Role");
+                      console.log("Added" + answer.roleAdd + "Role");
                     whatWouldYouLike();
                   }  
                 )
