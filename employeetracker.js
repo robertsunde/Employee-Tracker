@@ -168,32 +168,40 @@ const employeeAdd = () => {
     message: `Enter the role id.`,
     choices: results.map(item => item.title)
     },
+    ])
 
-    // {
-    // name: `manager_id`,
-    // type: `list`,
-    // message: `Enter the manager id.`,
-    // choices: results.map(item => item.first_name)
-    // }
-
-])
+.then((answer) => {
+    const roleChosen = results.find(item => item.title===answer.role_id)
+    const employeeFirstName = answer.employeeAdd;
+    const employeeLastName = answer.last_name;
+        connection.query("SELECT * FROM employee", function (err, results){
+        if (err) throw err;
+        inquirer
+        .prompt([{
+    name: `manager_id`,
+    type: `list`,
+    message: `Select the Manager for this employee.`,
+    choices: results.map(item => item.first_name)
+    }
+    ])
     .then((answer) => {
-        const roleChosen = results.find(item => item.title===answer.role_id)
-        // const managerChosen = results.find(item => item.first_name===answer.employee_id)
+         const managerChosen = results.find(item => item.first_name===answer.manager_id)
 
         connection.query(
           "INSERT INTO employee SET ?", {
-            first_name: answer.employeeAdd,
-            last_name: answer.last_name,
+            first_name: employeeFirstName,
+            last_name: employeeLastName,
             role_id: roleChosen.id,
-            // manager_id: managerChosen.id
+            manager_id: managerChosen.id
           },
           function (err) {
               if (err) throw err;
-              console.log("Added " + answer.employeeAdd + " " + answer.last_name + " to the team!");
+              console.log("Added " + employeeFirstName + " " + employeeLastName + " to the team!");
             whatWouldYouLike();
           }  
         )
+    })
+    })
     })
     })
     }
@@ -217,18 +225,6 @@ const employeeModifyRole = () => {
         if (err) throw err;
         inquirer
         .prompt([
-        {
-        name: `employeeAdd`,
-        type: `input`,
-        message: `Enter the new first name of the selected employee.`,
-    },
-
-    {
-    name: `last_name`,
-    type: `input`,
-    message: `Enter the new last name of the selected employee.`
-    },
-
     {
     name: `role_id`,
     type: `list`,
@@ -250,14 +246,12 @@ const employeeModifyRole = () => {
 
         connection.query(
           "UPDATE employee SET ? WHERE first_name = " + "'" + updateEmployee + "'", {
-            first_name: answer.employeeAdd,
-            last_name: answer.last_name,
             role_id: "" + roleChosen.id + "",
             // manager_id: managerChosen.id
           },
           function (err) {
               if (err) throw err;
-              console.log("Updated " + answer.employeeAdd + " " + answer.last_name + "'s info!");
+              console.log("Updated " + updateEmployee + "'s role!");
             whatWouldYouLike();
           }  
         )
