@@ -27,7 +27,8 @@ const whatWouldYouLike = () => {
         .prompt([{
             name: `action`,
             type: `list`,
-            message: `What would you like to do?`,
+            message: `Welcome to Rob's Employee Database!
+  What would you like to do?`,
             choices: [
                 `Add Department`,
                 `Add Role`,
@@ -66,6 +67,10 @@ const whatWouldYouLike = () => {
                 employeeView();
                 break;
 
+                case `Update Employee Role`:
+                employeeModifyRole();
+                break;
+
                 case `Exit`:
                 connection.end();
                 break;
@@ -77,15 +82,8 @@ const whatWouldYouLike = () => {
         inquirer
         .prompt([{
             name: `departmentAdd`,
-            type: `list`,
-            message: `Choose the department you would like to add.`,
-            choices: [
-                `Assembly`,
-                `Benching`,
-                `Machining`,
-                `EDM`,
-                `Engineering`
-            ]
+            type: `input`,
+            message: `Enter the name of the department you would like to add`,
         }])
         .then((answer) => {
             connection.query(
@@ -109,15 +107,8 @@ const whatWouldYouLike = () => {
             inquirer
             .prompt([{
                 name: `roleAdd`,
-                type: `list`,
-                message: `Choose the role you would like to add.`,
-                choices: [
-                    `Manager`,
-                    `Assistant Manager`,
-                    `Team Leader`,
-                    `Engineer`,
-                    `Designer`
-                ]
+                type: `input`,
+                message: `Enter the role you would like to add.`,
             },
 
             {
@@ -207,7 +198,74 @@ const employeeAdd = () => {
     })
     }
 
+// function for modifying an employee.
+const employeeModifyRole = () => {
+    connection.query("SELECT * FROM employee", function (err, results){
+    if (err) throw err;
+    inquirer
+    .prompt([{
+        name: `employeeUpdate`,
+        type: `list`,
+        message: `Choose the employee you would like to modify.`,
+        choices: results.map(item => item.first_name)
+        },
+    ])
 
+.then((answer) => {
+    const updateEmployee = (answer.employeeUpdate)
+    connection.query("SELECT * FROM role", function (err, results){
+        if (err) throw err;
+        inquirer
+        .prompt([
+        {
+        name: `employeeAdd`,
+        type: `input`,
+        message: `Enter the new first name of the selected employee.`,
+    },
+
+    {
+    name: `last_name`,
+    type: `input`,
+    message: `Enter the new last name of the selected employee.`
+    },
+
+    {
+    name: `role_id`,
+    type: `list`,
+    message: `Select the new role of the employee.`,
+    choices: results.map(item => item.title)
+    },
+
+    // {
+    // name: `manager_id`,
+    // type: `list`,
+    // message: `Enter the manager id.`,
+    // choices: results.map(item => item.first_name)
+    // }
+
+])
+    .then((answer) => {
+        const roleChosen = results.find(item => item.title===answer.role_id)
+        // const managerChosen = results.find(item => item.first_name===answer.employee_id)
+
+        connection.query(
+          "UPDATE employee SET ? WHERE first_name = " + "'" + updateEmployee + "'", {
+            first_name: answer.employeeAdd,
+            last_name: answer.last_name,
+            role_id: "" + roleChosen.id + "",
+            // manager_id: managerChosen.id
+          },
+          function (err) {
+              if (err) throw err;
+              console.log("Updated " + answer.employeeAdd + " " + answer.last_name + "'s info!");
+            whatWouldYouLike();
+          }  
+        )
+    })
+    })
+    })
+    })
+}
 
 
 // function for viewing departments in the terminal.
