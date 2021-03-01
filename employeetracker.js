@@ -34,6 +34,7 @@ const whatWouldYouLike = () => {
                 `Add Role`,
                 `Add Employee`,
                 `Remove Employee`,
+                `Remove Role`,
                 `View Department`,
                 `View Role`,
                 `View Employee`,
@@ -62,9 +63,9 @@ const whatWouldYouLike = () => {
                 employeeDelete();
                 break;
 
-                // case `Add Role`:
-                // roleAdd();
-                // break;
+                case `Remove Role`:
+                roleDelete();
+                break;
 
                 // case `Add Employee`:
                 // employeeAdd();
@@ -374,7 +375,7 @@ const employeeModifyManager = () => {
               })   
             }
 
-// function for deleting a selected employee.
+// function for removing a selected employee.
             const employeeDelete = () => {
                 connection.query("SELECT * FROM employee", function (err, results){
                     if(err) throw err;
@@ -400,6 +401,42 @@ const employeeModifyManager = () => {
                 })
               })   
             }
+
+// function for removing a selected role.
+            const roleDelete = () => {
+                connection.query("SELECT * FROM role", function (err, results){
+                    if(err) throw err;
+                    inquirer
+                    .prompt([{
+                    name: `roleDeleteName`,
+                    type: `list`,
+                    message: `Please select the role that you would like to remove.`,
+                    choices: results.map(item => item.title)
+                    },
+                ])
+              .then((answer) => {
+                const roleRemove1 = results.find(item => item.title===answer.roleDeleteName)
+                const roleRemove2 = roleRemove1.id
+                connection.query(
+                "DELETE FROM role WHERE id = " + "'" + roleRemove2 + "'",
+                function (err) {
+                if (err) throw err;
+                console.log("Successfully removed " + answer.roleDeleteName + " from the available roles!");
+                whatWouldYouLike();
+                    }  
+                )
+                })
+              })   
+            }
+
+
+
+
+
+
+
+
+// ////////////////////////////////////////////////////
 }
 
 
