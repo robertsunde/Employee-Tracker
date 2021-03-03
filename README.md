@@ -186,7 +186,7 @@ nodejs.org <br/>
 <br/>
 <br/>
 ## Tests <br/>
-npmjs.com <br/>
+No tests have been written for this application. <br/>
 <br/>
 <br/>
 ## Questions <br/>
