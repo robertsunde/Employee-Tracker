@@ -32,19 +32,19 @@ const whatWouldYouLike = () => {
             message: `Welcome to Rob's Employee Database!
   What would you like to do?`,
             choices: [
-                `Add Department`,
-                `Add Role`,
-                `Add Employee`,
-                `View Department`,
-                `View Role`,
-                `View Employee`,
-                `View Employees of Selected Manager`,
-                `View Budget of Selected Department`,
-                `Update Employee's Role`,
-                `Update Employee's Manager`,
-                `Remove Department`,
-                `Remove Role`,
-                `Remove Employee`,
+                `Add a Department`,
+                `Add a Role`,
+                `Add an Employee`,
+                `View a Department`,
+                `View a Role`,
+                `View an Employee`,
+                `View the Employees of Selected Manager`,
+                `View the Budget of Selected Department`,
+                `Update an Employee's Role`,
+                `Update an Employee's Manager`,
+                `Remove a Department`,
+                `Remove a Role`,
+                `Remove an Employee`,
                 `Exit`
             ]
         }
@@ -52,55 +52,55 @@ const whatWouldYouLike = () => {
 // //////////////////////////////////////////////////////////////////////////
     ]).then((answer) => {
             switch (answer.action) {
-                case `Add Department`:
+                case `Add a Department`:
                 departmentAdd();
                 break;
 
-                case `Add Role`:
+                case `Add a Role`:
                 roleAdd();
                 break;
 
-                case `Add Employee`:
+                case `Add an Employee`:
                 employeeAdd();
                 break;
 
-                case `Remove Employee`:
+                case `Remove an Employee`:
                 employeeDelete();
                 break;
 
-                case `Remove Role`:
+                case `Remove a Role`:
                 roleDelete();
                 break;
 
-                case `Remove Department`:
+                case `Remove a Department`:
                 departmentDelete();
                 break;
 
-                case `View Department`:
+                case `View a Department`:
                 departmentView();
                 break;
 
-                case `View Role`:
+                case `View a Role`:
                 roleView();
                 break;
 
-                case `View Employee`:
+                case `View an Employee`:
                 employeeView();
                 break;
 
-                case `View Employees of Selected Manager`:
+                case `View the Employees of Selected Manager`:
                 employeeManagerView();
                 break;
 
-                case `View Budget of Selected Department`:
+                case `View the Budget of Selected Department`:
                 departmentBudgetView();
                 break;
 
-                case `Update Employee's Role`:
+                case `Update an Employee's Role`:
                 employeeModifyRole();
                 break;
 
-                case `Update Employee's Manager`:
+                case `Update an Employee's Manager`:
                 employeeModifyManager();
                 break;
 
@@ -157,7 +157,7 @@ const whatWouldYouLike = () => {
             {
             name: `department_id`,
             type: `list`,
-            message: `Enter the department id of this role.`,
+            message: `Select the department to which this role belongs.`,
             choices: results.map(item => item.name)
             },
 
@@ -173,7 +173,7 @@ const whatWouldYouLike = () => {
                   },
                   function (err) {
                       if (err) throw err;
-                      console.log("Added" + answer.roleAdd + "Role");
+                      console.log("Added " + answer.roleAdd + " Role!");
                     whatWouldYouLike();
                   }  
                 )
@@ -202,7 +202,7 @@ const employeeAdd = () => {
     {
     name: `role_id`,
     type: `list`,
-    message: `Enter the role id.`,
+    message: `Select the role of this employee.`,
     choices: results.map(item => item.title)
     },
     ])
