@@ -22,7 +22,7 @@ This application runs in the terminal. In order to run, NPM must be installed. A
 <br/>
 <br/>
 ## Usage <br/>
-After following the directions listed under "install/execution" the application is ready for use. The user will be greeted with a menu that contains a list of options for building out an employee database. From the menu, select the choices that you would like to utilize in order to build out a custom employee tracking database to your liking. Once finished, select exit to close the application. The data retained during the application run will be stored in the coorisponding database titled "employee_tracker_db". <br/>
+After following the directions listed under "install/execution" the application is ready for use. The user will be greeted with a menu that contains a list of options for building out an employee database. From the menu, select the choices that you would like to utilize in order to build out a custom employee tracking database to your liking. Once finished, select exit to close the application. The data retained during the application run will be stored in the coorisponding database titled "employee_tracker_db". Click the following link to see a walkthrough video of the application in action! https://drive.google.com/file/d/14Jh2WPcsYFTUTQ385PqziL1iRBKGhPrh/view <br/>
 <br/>
 <br/>
 ## License <br/>
