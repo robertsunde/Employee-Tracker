@@ -5,6 +5,7 @@
 <br/>
 ## Description <br/>
 The "Employee Tracker" application was created to create and organize a database for keeping track of employees within a company. <br/>
+![employeetrackerscreenshot](https://user-images.githubusercontent.com/73792987/109749023-e237e180-7ba7-11eb-8fc1-6080725f5043.png)
 <br/>
 <br/>
 ## Table of Contents <br/>
