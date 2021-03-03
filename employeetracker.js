@@ -35,9 +35,9 @@ const whatWouldYouLike = () => {
                 `Add a Department`,
                 `Add a Role`,
                 `Add an Employee`,
-                `View a Department`,
-                `View a Role`,
-                `View an Employee`,
+                `View all Departments`,
+                `View all Roles`,
+                `View all Employees`,
                 `View the Employees of Selected Manager`,
                 `View the Budget of Selected Department`,
                 `Update an Employee's Role`,
@@ -76,15 +76,15 @@ const whatWouldYouLike = () => {
                 departmentDelete();
                 break;
 
-                case `View a Department`:
+                case `View all Departments`:
                 departmentView();
                 break;
 
-                case `View a Role`:
+                case `View all Roles`:
                 roleView();
                 break;
 
-                case `View an Employee`:
+                case `View all Employees`:
                 employeeView();
                 break;
 
